@@ -1,4 +1,3 @@
-
 export type UserType = 'actor' | 'producer' | 'agent';
 
 export interface User {
@@ -98,6 +97,7 @@ export interface SearchFilters {
   hairColor?: string;
   eyeColor?: string;
   tags?: string[];
+  searchText?: string; // Added searchText property
 }
 
 export interface SubscriptionTier {

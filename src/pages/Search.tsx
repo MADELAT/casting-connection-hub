@@ -1,10 +1,9 @@
-
 import { useState } from "react";
 import MainLayout from "@/components/layout/MainLayout";
 import ActorSearch from "@/components/producer/ActorSearch";
 import ActorCard from "@/components/producer/ActorCard";
 import { ActorProfile, SearchFilters } from "@/types";
-import { Clock } from "lucide-react";
+import { Clock, Search as SearchIcon } from "lucide-react";
 
 // Mock data
 const mockActors: ActorProfile[] = [
@@ -285,7 +284,7 @@ const Search = () => {
         ) : (
           <div className="flex flex-col items-center justify-center py-20 bg-casting-50 border border-casting-200 rounded-xl">
             <div className="w-24 h-24 bg-casting-100 rounded-full flex items-center justify-center mb-6">
-              <Search className="h-10 w-10 text-casting-500" />
+              <SearchIcon className="h-10 w-10 text-casting-500" />
             </div>
             <h2 className="text-2xl font-medium mb-2">Busca actores</h2>
             <p className="text-casting-500 text-center max-w-md mb-6">

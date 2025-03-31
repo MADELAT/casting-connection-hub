@@ -10,8 +10,9 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Play, Download, Star, X, MessageSquare, Check } from "lucide-react";
+import { Play, Download, Star, X, MessageSquare, Check, Eye } from "lucide-react";
 import { toast } from "sonner";
 import { CastingSubmission } from "@/types";
 
