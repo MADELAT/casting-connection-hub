@@ -1,134 +1,217 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, User, Film, Settings, LogOut, UserCheck, Search, Home } from "lucide-react";
+import { 
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle
+} from "@/components/ui/navigation-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { User, Menu, X } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
 
-interface NavBarProps {
-  userType?: 'actor' | 'producer' | 'agent' | null;
-  isLoggedIn: boolean;
-}
-
-const NavBar = ({ userType, isLoggedIn }: NavBarProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+const NavBar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const { user, userProfile, signOut } = useAuth();
   const location = useLocation();
-  
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    // Cierra el menú móvil al cambiar de ruta
+    setIsMenuOpen(false);
+  }, [location]);
+
+  const handleSignOut = async () => {
+    await signOut();
   };
-  
-  const closeMenu = () => {
-    setIsOpen(false);
-  };
-  
-  const isActive = (path: string) => {
-    return location.pathname === path;
-  };
+
+  const navbarClasses = cn(
+    "sticky top-0 z-50 w-full transition-all duration-300",
+    {
+      "bg-white/80 backdrop-blur-md shadow-sm": isScrolled,
+      "bg-transparent": !isScrolled && location.pathname === "/",
+      "bg-white": !isScrolled && location.pathname !== "/"
+    }
+  );
+
+  const logoClasses = cn(
+    "text-xl font-bold tracking-tight transition-colors duration-300",
+    {
+      "text-white": !isScrolled && location.pathname === "/",
+      "text-casting-900": isScrolled || location.pathname !== "/"
+    }
+  );
+
+  const linkClasses = cn(
+    "text-sm transition-colors duration-300",
+    {
+      "text-white/70 hover:text-white": !isScrolled && location.pathname === "/",
+      "text-casting-600 hover:text-casting-900": isScrolled || location.pathname !== "/"
+    }
+  );
 
   return (
-    <nav className="bg-white/90 backdrop-blur-sm border-b border-casting-100 sticky top-0 z-50">
+    <header className={navbarClasses}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex-shrink-0 flex items-center">
-            <Link to="/" className="flex items-center">
-              <Film className="h-8 w-8 text-accent-copper" />
-              <span className="ml-2 text-xl font-playfair font-bold tracking-tight">CastingHub</span>
+        <div className="flex h-16 items-center justify-between">
+          {/* Logo y navegación principal */}
+          <div className="flex items-center">
+            <Link to="/" className={logoClasses}>
+              CastingHub
             </Link>
+            
+            {/* Navegación escritorio */}
+            <div className="hidden md:ml-10 md:block">
+              <NavigationMenu>
+                <NavigationMenuList>
+                  <NavigationMenuItem>
+                    <Link to="/for-talent">
+                      <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                        Para Talento
+                      </NavigationMenuLink>
+                    </Link>
+                  </NavigationMenuItem>
+                  
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger>Casting</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-2">
+                        <li>
+                          <Link to="/search">
+                            <NavigationMenuLink className={cn("block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground")}>
+                              <div className="text-sm font-medium leading-none">Actores</div>
+                              <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                                Encuentra actores y actrices para tus proyectos
+                              </p>
+                            </NavigationMenuLink>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/models">
+                            <NavigationMenuLink className={cn("block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground")}>
+                              <div className="text-sm font-medium leading-none">Modelos</div>
+                              <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                                Explora perfiles de modelos profesionales
+                              </p>
+                            </NavigationMenuLink>
+                          </Link>
+                        </li>
+                      </ul>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                  
+                  <NavigationMenuItem>
+                    <Link to="/models">
+                      <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                        Modelos
+                      </NavigationMenuLink>
+                    </Link>
+                  </NavigationMenuItem>
+                  
+                  <NavigationMenuItem>
+                    <Link to="/post-job">
+                      <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                        Publicar Rol
+                      </NavigationMenuLink>
+                    </Link>
+                  </NavigationMenuItem>
+                  
+                  <NavigationMenuItem>
+                    <Link to="/about">
+                      <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                        Nosotros
+                      </NavigationMenuLink>
+                    </Link>
+                  </NavigationMenuItem>
+                  
+                  <NavigationMenuItem>
+                    <Link to="/how-it-works">
+                      <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                        Cómo Funciona
+                      </NavigationMenuLink>
+                    </Link>
+                  </NavigationMenuItem>
+                  
+                  <NavigationMenuItem>
+                    <Link to="/pricing">
+                      <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                        Precios
+                      </NavigationMenuLink>
+                    </Link>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
+            </div>
           </div>
           
-          <div className="hidden md:flex md:items-center md:space-x-6">
-            <Link 
-              to="/" 
-              className={cn(
-                "text-casting-600 hover:text-accent-copper px-3 py-2 text-sm font-medium transition-colors", 
-                isActive("/") && "text-accent-copper"
-              )}
-            >
-              Inicio
-            </Link>
-            
-            <Link 
-              to="/how-it-works" 
-              className={cn(
-                "text-casting-600 hover:text-accent-copper px-3 py-2 text-sm font-medium transition-colors", 
-                isActive("/how-it-works") && "text-accent-copper"
-              )}
-            >
-              Cómo funciona
-            </Link>
-            
-            <Link 
-              to="/pricing" 
-              className={cn(
-                "text-casting-600 hover:text-accent-copper px-3 py-2 text-sm font-medium transition-colors", 
-                isActive("/pricing") && "text-accent-copper"
-              )}
-            >
-              Precios
-            </Link>
-            
-            {isLoggedIn ? (
-              <>
-                {userType === 'actor' && (
-                  <Link 
-                    to="/actor/dashboard" 
-                    className={cn(
-                      "text-casting-600 hover:text-accent-copper px-3 py-2 text-sm font-medium transition-colors", 
-                      isActive("/actor/dashboard") && "text-accent-copper"
-                    )}
+          {/* Autenticación */}
+          <div className="hidden md:block">
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-casting-100">
+                      <User className="h-5 w-5 text-casting-600" />
+                    </div>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <div className="flex items-center justify-start gap-2 p-2">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-casting-100">
+                      <User className="h-4 w-4 text-casting-600" />
+                    </div>
+                    <div className="flex flex-col space-y-0.5">
+                      <p className="text-sm font-medium">{userProfile?.name || "Usuario"}</p>
+                      <p className="text-xs text-casting-500">{userProfile?.email}</p>
+                    </div>
+                  </div>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link 
+                      to={
+                        userProfile?.userType === 'actor' ? '/actor/dashboard' :
+                        userProfile?.userType === 'producer' ? '/producer/dashboard' :
+                        userProfile?.userType === 'model' ? '/model/dashboard' : '/'
+                      }
+                      className="cursor-pointer"
+                    >
+                      Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    className="cursor-pointer"
+                    onClick={handleSignOut}
                   >
-                    Mi Perfil
-                  </Link>
-                )}
-                
-                {userType === 'producer' && (
-                  <Link 
-                    to="/producer/dashboard" 
-                    className={cn(
-                      "text-casting-600 hover:text-accent-copper px-3 py-2 text-sm font-medium transition-colors", 
-                      isActive("/producer/dashboard") && "text-accent-copper"
-                    )}
-                  >
-                    Panel de Control
-                  </Link>
-                )}
-                
-                {(userType === 'producer' || userType === 'agent') && (
-                  <Link 
-                    to="/search" 
-                    className={cn(
-                      "text-casting-600 hover:text-accent-copper px-3 py-2 text-sm font-medium transition-colors", 
-                      isActive("/search") && "text-accent-copper"
-                    )}
-                  >
-                    Buscar Talento
-                  </Link>
-                )}
-                
-                <Link 
-                  to="/account/settings" 
-                  className={cn(
-                    "text-casting-600 hover:text-accent-copper px-3 py-2 text-sm font-medium transition-colors", 
-                    isActive("/account/settings") && "text-accent-copper"
-                  )}
-                >
-                  Configuración
-                </Link>
-                
-                <Button 
-                  variant="ghost" 
-                  className="text-casting-600 hover:text-accent-copper"
-                  onClick={() => console.log("Logout clicked")}
-                >
-                  Cerrar Sesión
-                </Button>
-              </>
+                    Cerrar sesión
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
-              <>
+              <div className="flex items-center gap-4">
                 <Link to="/login">
-                  <Button variant="ghost" className="text-casting-600 hover:text-accent-copper">
-                    Iniciar Sesión
+                  <Button variant="ghost" className={linkClasses}>
+                    Iniciar sesión
                   </Button>
                 </Link>
                 <Link to="/register">
@@ -136,171 +219,97 @@ const NavBar = ({ userType, isLoggedIn }: NavBarProps) => {
                     Registrarse
                   </Button>
                 </Link>
-              </>
+              </div>
             )}
           </div>
           
-          <div className="flex md:hidden items-center">
+          {/* Botón menú móvil */}
+          <div className="flex md:hidden">
             <button
-              onClick={toggleMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-casting-600 hover:text-accent-copper focus:outline-none"
+              type="button"
+              className={cn(
+                "inline-flex items-center justify-center rounded-md p-2 transition-colors",
+                {
+                  "text-white hover:bg-white/10": !isScrolled && location.pathname === "/",
+                  "text-casting-600 hover:bg-casting-100": isScrolled || location.pathname !== "/"
+                }
+              )}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               <span className="sr-only">Abrir menú</span>
-              {isOpen ? (
-                <X className="block h-6 w-6" aria-hidden="true" />
+              {isMenuOpen ? (
+                <X className="h-6 w-6" aria-hidden="true" />
               ) : (
-                <Menu className="block h-6 w-6" aria-hidden="true" />
+                <Menu className="h-6 w-6" aria-hidden="true" />
               )}
             </button>
           </div>
         </div>
       </div>
       
-      {/* Mobile menu */}
-      {isOpen && (
-        <div className="md:hidden absolute top-16 inset-x-0 z-50 bg-white border-b border-casting-100 shadow-lg animate-fade-in">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <Link 
-              to="/" 
-              className={cn(
-                "block px-3 py-2 rounded-md text-base font-medium hover:bg-casting-50", 
-                isActive("/") ? "text-accent-copper" : "text-casting-600"
-              )}
-              onClick={closeMenu}
-            >
-              <div className="flex items-center">
-                <Home className="mr-2 h-5 w-5" />
-                Inicio
-              </div>
+      {/* Menú móvil */}
+      {isMenuOpen && (
+        <div className="md:hidden">
+          <div className="bg-white px-4 pt-2 pb-3 space-y-1">
+            <Link to="/for-talent" className="block px-3 py-2 rounded-md text-base font-medium text-casting-600 hover:bg-casting-50">
+              Para Talento
+            </Link>
+            <Link to="/search" className="block px-3 py-2 rounded-md text-base font-medium text-casting-600 hover:bg-casting-50">
+              Actores
+            </Link>
+            <Link to="/models" className="block px-3 py-2 rounded-md text-base font-medium text-casting-600 hover:bg-casting-50">
+              Modelos
+            </Link>
+            <Link to="/post-job" className="block px-3 py-2 rounded-md text-base font-medium text-casting-600 hover:bg-casting-50">
+              Publicar Rol
+            </Link>
+            <Link to="/about" className="block px-3 py-2 rounded-md text-base font-medium text-casting-600 hover:bg-casting-50">
+              Nosotros
+            </Link>
+            <Link to="/how-it-works" className="block px-3 py-2 rounded-md text-base font-medium text-casting-600 hover:bg-casting-50">
+              Cómo Funciona
+            </Link>
+            <Link to="/pricing" className="block px-3 py-2 rounded-md text-base font-medium text-casting-600 hover:bg-casting-50">
+              Precios
             </Link>
             
-            <Link 
-              to="/how-it-works" 
-              className={cn(
-                "block px-3 py-2 rounded-md text-base font-medium hover:bg-casting-50", 
-                isActive("/how-it-works") ? "text-accent-copper" : "text-casting-600"
-              )}
-              onClick={closeMenu}
-            >
-              <div className="flex items-center">
-                <Film className="mr-2 h-5 w-5" />
-                Cómo funciona
-              </div>
-            </Link>
-            
-            <Link 
-              to="/pricing" 
-              className={cn(
-                "block px-3 py-2 rounded-md text-base font-medium hover:bg-casting-50", 
-                isActive("/pricing") ? "text-accent-copper" : "text-casting-600"
-              )}
-              onClick={closeMenu}
-            >
-              <div className="flex items-center">
-                <Settings className="mr-2 h-5 w-5" />
-                Precios
-              </div>
-            </Link>
-            
-            {isLoggedIn ? (
+            {user ? (
               <>
-                {userType === 'actor' && (
-                  <Link 
-                    to="/actor/dashboard" 
-                    className={cn(
-                      "block px-3 py-2 rounded-md text-base font-medium hover:bg-casting-50", 
-                      isActive("/actor/dashboard") ? "text-accent-copper" : "text-casting-600"
-                    )}
-                    onClick={closeMenu}
-                  >
-                    <div className="flex items-center">
-                      <User className="mr-2 h-5 w-5" />
-                      Mi Perfil
-                    </div>
-                  </Link>
-                )}
-                
-                {userType === 'producer' && (
-                  <Link 
-                    to="/producer/dashboard" 
-                    className={cn(
-                      "block px-3 py-2 rounded-md text-base font-medium hover:bg-casting-50", 
-                      isActive("/producer/dashboard") ? "text-accent-copper" : "text-casting-600"
-                    )}
-                    onClick={closeMenu}
-                  >
-                    <div className="flex items-center">
-                      <UserCheck className="mr-2 h-5 w-5" />
-                      Panel de Control
-                    </div>
-                  </Link>
-                )}
-                
-                {(userType === 'producer' || userType === 'agent') && (
-                  <Link 
-                    to="/search" 
-                    className={cn(
-                      "block px-3 py-2 rounded-md text-base font-medium hover:bg-casting-50", 
-                      isActive("/search") ? "text-accent-copper" : "text-casting-600"
-                    )}
-                    onClick={closeMenu}
-                  >
-                    <div className="flex items-center">
-                      <Search className="mr-2 h-5 w-5" />
-                      Buscar Talento
-                    </div>
-                  </Link>
-                )}
-                
                 <Link 
-                  to="/account/settings" 
-                  className={cn(
-                    "block px-3 py-2 rounded-md text-base font-medium hover:bg-casting-50", 
-                    isActive("/account/settings") ? "text-accent-copper" : "text-casting-600"
-                  )}
-                  onClick={closeMenu}
+                  to={
+                    userProfile?.userType === 'actor' ? '/actor/dashboard' :
+                    userProfile?.userType === 'producer' ? '/producer/dashboard' :
+                    userProfile?.userType === 'model' ? '/model/dashboard' : '/'
+                  }
+                  className="block px-3 py-2 rounded-md text-base font-medium text-casting-600 hover:bg-casting-50"
                 >
-                  <div className="flex items-center">
-                    <Settings className="mr-2 h-5 w-5" />
-                    Configuración
-                  </div>
+                  Mi Dashboard
                 </Link>
-                
-                <button
+                <button 
+                  onClick={handleSignOut}
                   className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-casting-600 hover:bg-casting-50"
-                  onClick={() => {
-                    closeMenu();
-                    console.log("Logout clicked");
-                  }}
                 >
-                  <div className="flex items-center">
-                    <LogOut className="mr-2 h-5 w-5" />
-                    Cerrar Sesión
-                  </div>
+                  Cerrar sesión
                 </button>
               </>
             ) : (
-              <>
-                <Link 
-                  to="/login" 
-                  className="block px-3 py-2 rounded-md text-base font-medium text-casting-600 hover:bg-casting-50"
-                  onClick={closeMenu}
-                >
-                  Iniciar Sesión
+              <div className="pt-4 flex flex-col space-y-2">
+                <Link to="/login" className="w-full">
+                  <Button variant="outline" className="w-full">
+                    Iniciar sesión
+                  </Button>
                 </Link>
-                <Link 
-                  to="/register" 
-                  className="block px-3 py-2 rounded-md text-base font-medium text-white bg-accent-copper hover:bg-accent-copper/90"
-                  onClick={closeMenu}
-                >
-                  Registrarse
+                <Link to="/register" className="w-full">
+                  <Button className="w-full bg-accent-copper hover:bg-accent-copper/90 text-white">
+                    Registrarse
+                  </Button>
                 </Link>
-              </>
+              </div>
             )}
           </div>
         </div>
       )}
-    </nav>
+    </header>
   );
 };
 
