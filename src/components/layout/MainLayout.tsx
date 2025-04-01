@@ -5,7 +5,7 @@ import Footer from "./Footer";
 
 interface MainLayoutProps {
   children: ReactNode;
-  userType?: 'actor' | 'producer' | 'agent' | 'model' | null;
+  userType?: 'actor' | 'producer' | 'agent' | 'model' | 'admin' | null;
   isLoggedIn?: boolean;
   hideFooter?: boolean;
 }
@@ -19,7 +19,7 @@ const MainLayout = ({
   return (
     <div className="min-h-screen flex flex-col">
       <NavBar userType={userType} isLoggedIn={isLoggedIn} />
-      <main className="flex-grow">
+      <main className="flex-grow animate-fade-in">
         {children}
       </main>
       {!hideFooter && <Footer />}

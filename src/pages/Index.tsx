@@ -12,21 +12,21 @@ const Index = () => {
     <MainLayout>
       {/* Hero Section - Más impactante y a pantalla completa */}
       <section className="relative min-h-[80vh] flex items-center">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1611473568913-c939ae5db4f3?q=80&w=2070')] bg-cover bg-center">
-          <div className="absolute inset-0 bg-gradient-to-r from-casting-950 via-casting-900/95 to-transparent"></div>
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1564233442644-597d880bf626?q=80&w=2232&auto=format&fit=crop')] bg-cover bg-center">
+          <div className="absolute inset-0 bg-gradient-to-r from-casting-950/95 via-casting-900/90 to-transparent"></div>
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 relative z-10">
           <div className="md:w-3/5">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold font-playfair leading-tight mb-6 text-white">
-              Conectando <span className="text-accent-copper">talento</span> con oportunidades
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 text-white font-sans">
+              CastingHub
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-gray-200">
-              La plataforma donde actores y productores se encuentran para crear el futuro del cine y la televisión.
+              La plataforma donde actores, modelos y productores se encuentran para crear el futuro del cine y la televisión.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               {!user ? (
                 <Link to="/register">
-                  <Button className="bg-accent-copper hover:bg-accent-copper/90 text-white px-8 py-6 rounded-md text-lg">
+                  <Button className="bg-accent-copper hover:bg-accent-copper/90 text-white px-8 py-6 rounded-md text-lg transition-all duration-300 hover:translate-y-[-2px] hover:shadow-lg">
                     Comenzar gratis <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
@@ -36,13 +36,13 @@ const Index = () => {
                   userProfile?.userType === 'producer' ? '/producer/dashboard' :
                   userProfile?.userType === 'model' ? '/model/dashboard' : '/'
                 }>
-                  <Button className="bg-accent-copper hover:bg-accent-copper/90 text-white px-8 py-6 rounded-md text-lg">
+                  <Button className="bg-accent-copper hover:bg-accent-copper/90 text-white px-8 py-6 rounded-md text-lg transition-all duration-300 hover:translate-y-[-2px] hover:shadow-lg">
                     Mi Dashboard <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
               )}
               <Link to="/how-it-works">
-                <Button variant="outline" className="bg-transparent text-white border-white hover:bg-white/10 px-8 py-6 rounded-md text-lg">
+                <Button variant="outline" className="bg-transparent text-white border-white hover:bg-white/10 px-8 py-6 rounded-md text-lg transition-all duration-300 hover:translate-y-[-2px]">
                   Cómo funciona
                 </Button>
               </Link>
@@ -52,7 +52,7 @@ const Index = () => {
       </section>
 
       {/* Galería de Perfiles Destacados - Nueva sección */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-white animate-fade-in">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold font-playfair mb-4">
@@ -65,9 +65,9 @@ const Index = () => {
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Perfil 1 */}
-            <div className="group relative overflow-hidden rounded-lg">
+            <div className="group relative overflow-hidden rounded-lg hover-scale">
               <img 
-                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" 
+                src="https://images.unsplash.com/photo-1675434704310-2af52463a6d0?q=80&w=2487&auto=format&fit=crop" 
                 alt="Actor" 
                 className="w-full aspect-[3/4] object-cover transition-transform group-hover:scale-105"
               />
@@ -79,9 +79,9 @@ const Index = () => {
             </div>
             
             {/* Perfil 2 */}
-            <div className="group relative overflow-hidden rounded-lg">
+            <div className="group relative overflow-hidden rounded-lg hover-scale">
               <img 
-                src="https://images.unsplash.com/photo-1519058082700-08a0b56da9b4?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" 
+                src="https://images.unsplash.com/photo-1551621955-fa07d4b1376b?q=80&w=2487&auto=format&fit=crop" 
                 alt="Actor" 
                 className="w-full aspect-[3/4] object-cover transition-transform group-hover:scale-105"
               />
@@ -93,9 +93,9 @@ const Index = () => {
             </div>
             
             {/* Perfil 3 */}
-            <div className="group relative overflow-hidden rounded-lg">
+            <div className="group relative overflow-hidden rounded-lg hover-scale">
               <img 
-                src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" 
+                src="https://images.unsplash.com/photo-1590123047191-898a69afb209?q=80&w=2340&auto=format&fit=crop" 
                 alt="Modelo" 
                 className="w-full aspect-[3/4] object-cover transition-transform group-hover:scale-105"
               />
@@ -107,9 +107,9 @@ const Index = () => {
             </div>
             
             {/* Perfil 4 */}
-            <div className="group relative overflow-hidden rounded-lg">
+            <div className="group relative overflow-hidden rounded-lg hover-scale">
               <img 
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" 
+                src="https://images.unsplash.com/photo-1550928323-31789f5b5d61?q=80&w=1971&auto=format&fit=crop" 
                 alt="Actor" 
                 className="w-full aspect-[3/4] object-cover transition-transform group-hover:scale-105"
               />
@@ -123,7 +123,7 @@ const Index = () => {
           
           <div className="text-center mt-10">
             <Link to="/search">
-              <Button className="bg-casting-900 hover:bg-casting-800 text-white">
+              <Button className="bg-casting-900 hover:bg-casting-800 text-white transition-all duration-300 hover:translate-y-[-2px] hover:shadow-lg">
                 Ver más talento <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
@@ -132,7 +132,7 @@ const Index = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-casting-50">
+      <section className="py-20 bg-casting-50 animate-fade-in">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold font-playfair mb-4">
@@ -145,7 +145,7 @@ const Index = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Feature 1 */}
-            <div className="feature-card bg-white p-8 rounded-xl shadow-sm border border-casting-100">
+            <div className="feature-card hover-scale">
               <div className="text-accent-copper mb-4">
                 <Camera size={48} />
               </div>
@@ -156,7 +156,7 @@ const Index = () => {
             </div>
             
             {/* Feature 2 */}
-            <div className="feature-card bg-white p-8 rounded-xl shadow-sm border border-casting-100">
+            <div className="feature-card hover-scale">
               <div className="text-accent-copper mb-4">
                 <Film size={48} />
               </div>
@@ -167,7 +167,7 @@ const Index = () => {
             </div>
             
             {/* Feature 3 */}
-            <div className="feature-card bg-white p-8 rounded-xl shadow-sm border border-casting-100">
+            <div className="feature-card hover-scale">
               <div className="text-accent-copper mb-4">
                 <Search size={48} />
               </div>
@@ -180,9 +180,12 @@ const Index = () => {
         </div>
       </section>
       
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-casting-900 to-casting-950 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      {/* CTA Section with background image */}
+      <section className="py-20 relative text-white animate-fade-in">
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1619344755866-f5c7ca79b2f6?q=80&w=2230&auto=format&fit=crop')] bg-cover bg-center">
+          <div className="absolute inset-0 bg-gradient-to-r from-casting-950/95 to-casting-900/90"></div>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <h2 className="text-3xl md:text-4xl font-bold font-playfair mb-6">
             Impulsa tu carrera <span className="text-accent-copper">hoy mismo</span>
           </h2>
@@ -193,12 +196,12 @@ const Index = () => {
             {!user ? (
               <>
                 <Link to="/register">
-                  <Button className="bg-accent-copper hover:bg-accent-copper/90 text-white px-8 py-6 rounded-md text-lg">
+                  <Button className="bg-accent-copper hover:bg-accent-copper/90 text-white px-8 py-6 rounded-md text-lg transition-all duration-300 hover:translate-y-[-2px] hover:shadow-lg">
                     Crear cuenta gratuita
                   </Button>
                 </Link>
                 <Link to="/pricing">
-                  <Button variant="outline" className="bg-transparent text-white border-white hover:bg-white/10 px-8 py-6 rounded-md text-lg">
+                  <Button variant="outline" className="bg-transparent text-white border-white hover:bg-white/10 px-8 py-6 rounded-md text-lg transition-all duration-300 hover:translate-y-[-2px]">
                     Ver planes y precios
                   </Button>
                 </Link>
@@ -209,7 +212,7 @@ const Index = () => {
                 userProfile?.userType === 'producer' ? '/producer/dashboard' :
                 userProfile?.userType === 'model' ? '/model/dashboard' : '/'
               }>
-                <Button className="bg-accent-copper hover:bg-accent-copper/90 text-white px-8 py-6 rounded-md text-lg">
+                <Button className="bg-accent-copper hover:bg-accent-copper/90 text-white px-8 py-6 rounded-md text-lg transition-all duration-300 hover:translate-y-[-2px] hover:shadow-lg">
                   Mi Dashboard <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>

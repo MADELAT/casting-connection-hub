@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -17,7 +18,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User, Menu, X } from "lucide-react";
+import { User, Menu, X, Film } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
 
@@ -54,7 +55,7 @@ const NavBar = ({ userType = null, isLoggedIn = false }) => {
   );
 
   const logoClasses = cn(
-    "text-xl font-bold tracking-tight transition-colors duration-300",
+    "text-xl font-bold tracking-tight transition-colors duration-300 flex items-center",
     {
       "text-white": !isScrolled && location.pathname === "/",
       "text-casting-900": isScrolled || location.pathname !== "/"
@@ -64,7 +65,7 @@ const NavBar = ({ userType = null, isLoggedIn = false }) => {
   const linkClasses = cn(
     "text-sm transition-colors duration-300",
     {
-      "text-white/70 hover:text-white": !isScrolled && location.pathname === "/",
+      "text-white/80 hover:text-white": !isScrolled && location.pathname === "/",
       "text-casting-600 hover:text-casting-900": isScrolled || location.pathname !== "/"
     }
   );
@@ -75,6 +76,7 @@ const NavBar = ({ userType = null, isLoggedIn = false }) => {
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
             <Link to="/" className={logoClasses}>
+              <Film className="h-6 w-6 mr-2 text-accent-copper" />
               CastingHub
             </Link>
             
@@ -165,13 +167,13 @@ const NavBar = ({ userType = null, isLoggedIn = false }) => {
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                  <Button variant="ghost" className="relative h-10 w-10 rounded-full transition-all duration-300 hover:bg-accent-copper/10">
                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-casting-100">
                       <User className="h-5 w-5 text-casting-600" />
                     </div>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent align="end" className="w-56">
                   <div className="flex items-center justify-start gap-2 p-2">
                     <div className="flex h-8 w-8 items-center justify-center rounded-full bg-casting-100">
                       <User className="h-4 w-4 text-casting-600" />
@@ -187,7 +189,8 @@ const NavBar = ({ userType = null, isLoggedIn = false }) => {
                       to={
                         userProfile?.userType === 'actor' ? '/actor/dashboard' :
                         userProfile?.userType === 'producer' ? '/producer/dashboard' :
-                        userProfile?.userType === 'model' ? '/model/dashboard' : '/'
+                        userProfile?.userType === 'model' ? '/model/dashboard' : 
+                        userProfile?.userType === 'admin' ? '/admin/dashboard' : '/'
                       }
                       className="cursor-pointer"
                     >
@@ -210,7 +213,7 @@ const NavBar = ({ userType = null, isLoggedIn = false }) => {
                   </Button>
                 </Link>
                 <Link to="/register">
-                  <Button className="bg-accent-copper hover:bg-accent-copper/90 text-white">
+                  <Button className="bg-accent-copper hover:bg-accent-copper/90 text-white transition-all duration-300 hover:translate-y-[-2px] hover:shadow-md">
                     Registrarse
                   </Button>
                 </Link>
@@ -243,7 +246,7 @@ const NavBar = ({ userType = null, isLoggedIn = false }) => {
       
       {isMenuOpen && (
         <div className="md:hidden">
-          <div className="bg-white px-4 pt-2 pb-3 space-y-1">
+          <div className="bg-white px-4 pt-2 pb-3 space-y-1 animate-fade-in">
             <Link to="/for-talent" className="block px-3 py-2 rounded-md text-base font-medium text-casting-600 hover:bg-casting-50">
               Para Talento
             </Link>
@@ -272,7 +275,8 @@ const NavBar = ({ userType = null, isLoggedIn = false }) => {
                   to={
                     userProfile?.userType === 'actor' ? '/actor/dashboard' :
                     userProfile?.userType === 'producer' ? '/producer/dashboard' :
-                    userProfile?.userType === 'model' ? '/model/dashboard' : '/'
+                    userProfile?.userType === 'model' ? '/model/dashboard' : 
+                    userProfile?.userType === 'admin' ? '/admin/dashboard' : '/'
                   }
                   className="block px-3 py-2 rounded-md text-base font-medium text-casting-600 hover:bg-casting-50"
                 >

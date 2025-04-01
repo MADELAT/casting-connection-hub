@@ -1,5 +1,6 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300;400;500;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -115,15 +116,15 @@
   }
   
   .btn-accent {
-    @apply bg-accent-copper text-white hover:bg-accent-copper/90;
+    @apply bg-accent-copper text-white hover:bg-accent-copper/90 transition-all duration-300 hover:translate-y-[-2px] hover:shadow-lg;
   }
   
   .btn-accent-blue {
-    @apply bg-accent-blue text-white hover:bg-accent-blue/90;
+    @apply bg-accent-blue text-white hover:bg-accent-blue/90 transition-all duration-300 hover:translate-y-[-2px] hover:shadow-lg;
   }
   
   .input-styled {
-    @apply border-casting-200 focus:border-accent-copper focus:ring-1 focus:ring-accent-copper;
+    @apply border-casting-200 focus:border-accent-copper focus:ring-1 focus:ring-accent-copper transition-colors duration-300;
   }
   
   .search-container {
@@ -137,4 +138,59 @@
   .feature-card:hover {
     @apply shadow-md border-casting-200;
   }
+  
+  .hover-scale {
+    @apply transition-transform duration-300 hover:scale-[1.02] hover:shadow-md;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Para agregar distintos retrasos en la animación */
+.delay-100 {
+  animation-delay: 100ms;
+}
+
+.delay-200 {
+  animation-delay: 200ms;
+}
+
+.delay-300 {
+  animation-delay: 300ms;
+}
+
+/* Transiciones de página */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.page-transition-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.page-transition-exit-active {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 300ms, transform 300ms;
 }

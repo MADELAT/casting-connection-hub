@@ -1,9 +1,11 @@
+
 import { useState } from "react";
 import MainLayout from "@/components/layout/MainLayout";
 import ActorSearch from "@/components/producer/ActorSearch";
 import ActorCard from "@/components/producer/ActorCard";
 import { ActorProfile, SearchFilters } from "@/types";
-import { Clock, Search as SearchIcon } from "lucide-react";
+import { Clock, Search as SearchIcon, Filter, SlidersHorizontal } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 // Mock data
 const mockActors: ActorProfile[] = [
@@ -220,6 +222,7 @@ const Search = () => {
   const [actors, setActors] = useState<ActorProfile[]>(mockActors);
   const [favoriteActors, setFavoriteActors] = useState<string[]>(["2", "3"]);
   const [hasSearched, setHasSearched] = useState(false);
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
   
   const handleToggleFavorite = (actorId: string) => {
     setFavoriteActors(prev =>
@@ -241,23 +244,78 @@ const Search = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold font-playfair mb-2">Búsqueda de talento</h1>
-          <p className="text-casting-500">
-            Encuentra el actor perfecto para tu próxima producción.
-          </p>
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-r from-casting-900 to-casting-950 text-white">
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1518929301966-019439ed8149?q=80&w=2275&auto=format&fit=crop')] bg-cover bg-center opacity-30"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-casting-950 to-transparent"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
+          <div className="md:w-3/5 animate-fade-in">
+            <h1 className="text-4xl md:text-5xl font-bold font-playfair leading-tight mb-4">
+              Búsqueda de <span className="text-accent-copper">talento</span>
+            </h1>
+            <p className="text-xl mb-6 text-gray-200">
+              Encuentra el actor perfecto para tu próxima producción.
+            </p>
+          </div>
         </div>
+      </section>
         
-        <ActorSearch onSearch={handleSearch} />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        {/* Advanced Search Filters */}
+        <div className="bg-white shadow-md rounded-xl p-6 -mt-10 mb-8 relative z-20 border border-casting-100 animate-fade-in">
+          <ActorSearch onSearch={handleSearch} />
+        </div>
         
         {hasSearched ? (
           <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold font-playfair">Resultados</h2>
-              <div className="flex items-center text-sm text-casting-500">
-                <Clock className="h-4 w-4 mr-1" />
-                <span>Última actualización: hace 2 minutos</span>
+            <div className="flex flex-col md:flex-row justify-between items-start mb-8 gap-4">
+              <div>
+                <h2 className="text-2xl md:text-3xl font-bold font-playfair">Resultados</h2>
+                <div className="flex items-center text-sm text-casting-500 mt-1">
+                  <Clock className="h-4 w-4 mr-1" />
+                  <span>Última actualización: hace 2 minutos</span>
+                </div>
+              </div>
+              
+              <div className="flex flex-wrap gap-2 md:gap-4">
+                <Select onValueChange={(value) => setActiveFilter(value === activeFilter ? null : value)}>
+                  <SelectTrigger className="w-[120px] border-casting-200 hover:border-accent-copper transition-colors">
+                    <SelectValue placeholder="Género" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="femenino">Femenino</SelectItem>
+                    <SelectItem value="masculino">Masculino</SelectItem>
+                    <SelectItem value="no-binario">No binario</SelectItem>
+                  </SelectContent>
+                </Select>
+                
+                <Select onValueChange={(value) => setActiveFilter(value === activeFilter ? null : value)}>
+                  <SelectTrigger className="w-[120px] border-casting-200 hover:border-accent-copper transition-colors">
+                    <SelectValue placeholder="Edad" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="18-25">18-25</SelectItem>
+                    <SelectItem value="26-35">26-35</SelectItem>
+                    <SelectItem value="36-45">36-45</SelectItem>
+                    <SelectItem value="46+">46+</SelectItem>
+                  </SelectContent>
+                </Select>
+                
+                <Select onValueChange={(value) => setActiveFilter(value === activeFilter ? null : value)}>
+                  <SelectTrigger className="w-[120px] border-casting-200 hover:border-accent-copper transition-colors">
+                    <SelectValue placeholder="Experiencia" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="principiante">Principiante</SelectItem>
+                    <SelectItem value="intermedio">Intermedio</SelectItem>
+                    <SelectItem value="avanzado">Avanzado</SelectItem>
+                  </SelectContent>
+                </Select>
+                
+                <Button variant="outline" className="flex items-center gap-2 border-casting-200 hover:border-accent-copper transition-colors">
+                  <SlidersHorizontal className="h-4 w-4" />
+                  Más filtros
+                </Button>
               </div>
             </div>
             
@@ -276,13 +334,14 @@ const Search = () => {
                     actor={actor}
                     isFavorite={favoriteActors.includes(actor.id)}
                     onToggleFavorite={handleToggleFavorite}
+                    className="animate-fade-in hover-scale"
                   />
                 ))}
               </div>
             )}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-20 bg-casting-50 border border-casting-200 rounded-xl">
+          <div className="flex flex-col items-center justify-center py-20 bg-casting-50 border border-casting-200 rounded-xl animate-fade-in">
             <div className="w-24 h-24 bg-casting-100 rounded-full flex items-center justify-center mb-6">
               <SearchIcon className="h-10 w-10 text-casting-500" />
             </div>
