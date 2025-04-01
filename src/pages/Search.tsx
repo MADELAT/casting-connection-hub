@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import MainLayout from "@/components/layout/MainLayout";
 import ActorSearch from "@/components/producer/ActorSearch";
@@ -6,6 +5,7 @@ import ActorCard from "@/components/producer/ActorCard";
 import { ActorProfile, SearchFilters } from "@/types";
 import { Clock, Search as SearchIcon, Filter, SlidersHorizontal } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 // Mock data
 const mockActors: ActorProfile[] = [

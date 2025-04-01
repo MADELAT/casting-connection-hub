@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -21,8 +20,14 @@ import {
 import { User, Menu, X, Film } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
+import { UserType } from "@/types";
 
-const NavBar = ({ userType = null, isLoggedIn = false }) => {
+interface NavBarProps {
+  userType?: UserType | null;
+  isLoggedIn?: boolean;
+}
+
+const NavBar = ({ userType = null, isLoggedIn = false }: NavBarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { user, userProfile, signOut } = useAuth();

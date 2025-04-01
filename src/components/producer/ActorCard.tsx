@@ -13,19 +13,21 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { cn } from "@/lib/utils";
 
 interface ActorCardProps {
   actor: ActorProfile;
   isFavorite?: boolean;
   onToggleFavorite?: (actorId: string) => void;
+  className?: string;
 }
 
-const ActorCard = ({ actor, isFavorite = false, onToggleFavorite }: ActorCardProps) => {
+const ActorCard = ({ actor, isFavorite = false, onToggleFavorite, className }: ActorCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <div 
-      className="bg-white border border-casting-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+      className={cn("bg-white border border-casting-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow", className)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

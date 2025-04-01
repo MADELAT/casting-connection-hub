@@ -1,4 +1,4 @@
-export type UserType = 'actor' | 'producer' | 'agent' | 'model';
+export type UserType = 'actor' | 'producer' | 'agent' | 'model' | 'admin';
 
 export interface User {
   id: string;
