@@ -5,7 +5,7 @@ import Footer from "./Footer";
 
 interface MainLayoutProps {
   children: ReactNode;
-  userType?: 'actor' | 'producer' | 'agent' | null;
+  userType?: 'actor' | 'producer' | 'agent' | 'model' | null;
   isLoggedIn?: boolean;
   hideFooter?: boolean;
 }
