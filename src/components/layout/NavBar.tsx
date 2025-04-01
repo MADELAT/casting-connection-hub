@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -22,7 +21,7 @@ import { User, Menu, X } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
 
-const NavBar = () => {
+const NavBar = ({ userType = null, isLoggedIn = false }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { user, userProfile, signOut } = useAuth();
@@ -38,7 +37,6 @@ const NavBar = () => {
   }, []);
 
   useEffect(() => {
-    // Cierra el menú móvil al cambiar de ruta
     setIsMenuOpen(false);
   }, [location]);
 
@@ -75,13 +73,11 @@ const NavBar = () => {
     <header className={navbarClasses}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          {/* Logo y navegación principal */}
           <div className="flex items-center">
             <Link to="/" className={logoClasses}>
               CastingHub
             </Link>
             
-            {/* Navegación escritorio */}
             <div className="hidden md:ml-10 md:block">
               <NavigationMenu>
                 <NavigationMenuList>
@@ -165,7 +161,6 @@ const NavBar = () => {
             </div>
           </div>
           
-          {/* Autenticación */}
           <div className="hidden md:block">
             {user ? (
               <DropdownMenu>
@@ -223,7 +218,6 @@ const NavBar = () => {
             )}
           </div>
           
-          {/* Botón menú móvil */}
           <div className="flex md:hidden">
             <button
               type="button"
@@ -247,7 +241,6 @@ const NavBar = () => {
         </div>
       </div>
       
-      {/* Menú móvil */}
       {isMenuOpen && (
         <div className="md:hidden">
           <div className="bg-white px-4 pt-2 pb-3 space-y-1">
