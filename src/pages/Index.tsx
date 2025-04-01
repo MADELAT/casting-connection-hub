@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Camera, Users, Film, Search, Clock, Star } from "lucide-react";
@@ -10,24 +9,24 @@ const Index = () => {
 
   return (
     <MainLayout>
-      {/* Hero Section - Más impactante y a pantalla completa */}
+      {/* Hero Section - Cinematographic style with background */}
       <section className="relative min-h-[80vh] flex items-center">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1564233442644-597d880bf626?q=80&w=2232&auto=format&fit=crop')] bg-cover bg-center">
-          <div className="absolute inset-0 bg-gradient-to-r from-casting-950/95 via-casting-900/90 to-transparent"></div>
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1540224871915-bc8ffb782bdf?q=80&w=3432&auto=format&fit=crop')] bg-cover bg-center">
+          <div className="absolute inset-0 bg-white/5 backdrop-blur-[2px] bg-gradient-to-r from-casting-950/95 via-casting-900/90 to-transparent"></div>
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 relative z-10">
           <div className="md:w-3/5">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 text-white font-sans">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl leading-tight mb-6 text-white font-sans font-normal">
               CastingHub
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-gray-200">
+            <p className="text-xl md:text-2xl mb-8 text-gray-200 font-sans font-normal">
               La plataforma donde actores, modelos y productores se encuentran para crear el futuro del cine y la televisión.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               {!user ? (
                 <Link to="/register">
-                  <Button className="bg-accent-copper hover:bg-accent-copper/90 text-white px-8 py-6 rounded-md text-lg transition-all duration-300 hover:translate-y-[-2px] hover:shadow-lg">
-                    Comenzar gratis <ArrowRight className="ml-2 h-5 w-5" />
+                  <Button className="bg-accent-copper hover:bg-accent-copper/90 text-white px-8 py-6 rounded-md text-lg transition-all duration-300 hover:translate-y-[-2px] hover:shadow-lg font-sans font-normal">
+                    Regístrate <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
               ) : (
@@ -36,13 +35,13 @@ const Index = () => {
                   userProfile?.userType === 'producer' ? '/producer/dashboard' :
                   userProfile?.userType === 'model' ? '/model/dashboard' : '/'
                 }>
-                  <Button className="bg-accent-copper hover:bg-accent-copper/90 text-white px-8 py-6 rounded-md text-lg transition-all duration-300 hover:translate-y-[-2px] hover:shadow-lg">
+                  <Button className="bg-accent-copper hover:bg-accent-copper/90 text-white px-8 py-6 rounded-md text-lg transition-all duration-300 hover:translate-y-[-2px] hover:shadow-lg font-sans font-normal">
                     Mi Dashboard <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
               )}
               <Link to="/how-it-works">
-                <Button variant="outline" className="bg-transparent text-white border-white hover:bg-white/10 px-8 py-6 rounded-md text-lg transition-all duration-300 hover:translate-y-[-2px]">
+                <Button variant="outline" className="bg-transparent text-white border-white hover:bg-white/10 px-8 py-6 rounded-md text-lg transition-all duration-300 hover:translate-y-[-2px] font-sans font-normal">
                   Cómo funciona
                 </Button>
               </Link>

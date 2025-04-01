@@ -497,7 +497,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      user_type_enum: "actor" | "model" | "producer" | "admin"
     }
     CompositeTypes: {
       [_ in never]: never

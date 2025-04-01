@@ -1,15 +1,13 @@
 
 import { Link } from "react-router-dom";
-import { 
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle
-} from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuTrigger 
+} from "@/components/ui/dropdown-menu";
+import { ChevronDown } from "lucide-react";
 
 interface DesktopNavigationProps {
   linkClasses: string;
@@ -17,87 +15,45 @@ interface DesktopNavigationProps {
 
 const DesktopNavigation = ({ linkClasses }: DesktopNavigationProps) => {
   return (
-    <div className="hidden md:ml-10 md:block">
-      <NavigationMenu>
-        <NavigationMenuList>
-          <NavigationMenuItem>
-            <Link to="/for-talent">
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                Para Talento
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-          
-          <NavigationMenuItem>
-            <NavigationMenuTrigger>Casting</NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-2">
-                <li>
-                  <Link to="/search">
-                    <NavigationMenuLink className={cn("block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground")}>
-                      <div className="text-sm font-medium leading-none">Actores</div>
-                      <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                        Encuentra actores y actrices para tus proyectos
-                      </p>
-                    </NavigationMenuLink>
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/models">
-                    <NavigationMenuLink className={cn("block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground")}>
-                      <div className="text-sm font-medium leading-none">Modelos</div>
-                      <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                        Explora perfiles de modelos profesionales
-                      </p>
-                    </NavigationMenuLink>
-                  </Link>
-                </li>
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-          
-          <NavigationMenuItem>
-            <Link to="/models">
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                Modelos
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-          
-          <NavigationMenuItem>
-            <Link to="/post-job">
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                Publicar Rol
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-          
-          <NavigationMenuItem>
-            <Link to="/about">
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                Nosotros
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-          
-          <NavigationMenuItem>
-            <Link to="/how-it-works">
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                Cómo Funciona
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-          
-          <NavigationMenuItem>
-            <Link to="/pricing">
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                Precios
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-        </NavigationMenuList>
-      </NavigationMenu>
-    </div>
+    <nav className="hidden md:flex gap-8 ml-10">
+      <Link to="/for-talent" className={linkClasses}>
+        Para Talento
+      </Link>
+      
+      <DropdownMenu>
+        <DropdownMenuTrigger className={cn(linkClasses, "flex items-center gap-1 outline-none")}>
+          Casting <ChevronDown className="h-4 w-4" />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="center" className="w-48">
+          <DropdownMenuItem asChild>
+            <Link to="/search" className="w-full cursor-pointer">Actores</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link to="/models" className="w-full cursor-pointer">Modelos</Link>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      
+      <Link to="/models" className={linkClasses}>
+        Modelos
+      </Link>
+      
+      <Link to="/post-job" className={linkClasses}>
+        Publicar Rol
+      </Link>
+      
+      <Link to="/about" className={linkClasses}>
+        Nosotros
+      </Link>
+      
+      <Link to="/how-it-works" className={linkClasses}>
+        Cómo Funciona
+      </Link>
+      
+      <Link to="/pricing" className={linkClasses}>
+        Precios
+      </Link>
+    </nav>
   );
 };
 

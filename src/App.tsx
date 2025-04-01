@@ -21,6 +21,8 @@ import ModelsPage from "./pages/ModelsPage";
 import AboutPage from "./pages/AboutPage";
 import ModelDashboard from "./pages/model/ModelDashboard";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import CastingsAbiertos from "./pages/CastingsAbiertos";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +44,7 @@ const App = () => {
               <Route path="/models" element={<ModelsPage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/post-job" element={<PostJob />} />
+              <Route path="/castings-abiertos" element={<CastingsAbiertos />} />
               
               {/* Protected routes */}
               <Route path="/actor/dashboard" element={
@@ -57,6 +60,11 @@ const App = () => {
               <Route path="/model/dashboard" element={
                 <ProtectedRoute allowedUserTypes={['model']}>
                   <ModelDashboard />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/dashboard" element={
+                <ProtectedRoute allowedUserTypes={['admin']}>
+                  <AdminDashboard />
                 </ProtectedRoute>
               } />
               
