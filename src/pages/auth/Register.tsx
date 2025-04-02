@@ -36,6 +36,7 @@ const Register = () => {
   const { user, signUp, userProfile } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [registerError, setRegisterError] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
@@ -50,16 +51,27 @@ const Register = () => {
 
   const onSubmit = async (values: z.infer<typeof registerSchema>) => {
     setIsLoading(true);
+    setRegisterError(null);
+    
+    console.log("Intentando registrar usuario con datos:", {
+      email: values.email,
+      name: values.name,
+      userType: values.userType
+    });
+    
     const { error } = await signUp(
       values.email, 
       values.password, 
       values.name, 
       values.userType as UserType
     );
+    
     setIsLoading(false);
 
     if (error) {
-      toast.error("Error al registrarse: " + (error.message || "Por favor intenta de nuevo"));
+      console.error("Error de registro detallado:", error);
+      setRegisterError(`Error al registrarse: ${error.message || "Por favor intenta de nuevo"}`);
+      toast.error(`Error al registrarse: ${error.message || "Por favor intenta de nuevo"}`);
       return;
     }
 
@@ -71,7 +83,8 @@ const Register = () => {
     const dashboardPath = 
       userProfile.userType === 'actor' ? '/actor/dashboard' :
       userProfile.userType === 'producer' ? '/producer/dashboard' :
-      userProfile.userType === 'model' ? '/model/dashboard' : '/';
+      userProfile.userType === 'model' ? '/model/dashboard' :
+      userProfile.userType === 'admin' ? '/admin/dashboard' : '/';
     
     return <Navigate to={dashboardPath} replace />;
   }
@@ -92,6 +105,12 @@ const Register = () => {
             <p className="text-casting-600 mb-8">
               Crea tu cuenta y comienza a conectar con oportunidades en la industria.
             </p>
+            
+            {registerError && (
+              <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-md">
+                {registerError}
+              </div>
+            )}
             
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -173,7 +192,7 @@ const Register = () => {
                             </FormControl>
                             <label
                               htmlFor="actor"
-                              className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-casting-50 p-4 hover:bg-casting-100 hover:border-accent-copper [&:has([data-state=checked])]:border-accent-copper [&:has([data-state=checked])]:bg-casting-100"
+                              className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-casting-50 p-4 hover:bg-casting-100 hover:border-accent-copper transition-all duration-200 [&:has([data-state=checked])]:border-accent-copper [&:has([data-state=checked])]:bg-casting-100 [&:has([data-state=checked])]:shadow-md"
                             >
                               <Video className="mb-3 h-6 w-6 text-accent-copper" />
                               <span className="text-sm font-medium">Actor/Actriz</span>
@@ -190,7 +209,7 @@ const Register = () => {
                             </FormControl>
                             <label
                               htmlFor="producer"
-                              className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-casting-50 p-4 hover:bg-casting-100 hover:border-accent-copper [&:has([data-state=checked])]:border-accent-copper [&:has([data-state=checked])]:bg-casting-100"
+                              className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-casting-50 p-4 hover:bg-casting-100 hover:border-accent-copper transition-all duration-200 [&:has([data-state=checked])]:border-accent-copper [&:has([data-state=checked])]:bg-casting-100 [&:has([data-state=checked])]:shadow-md"
                             >
                               <User className="mb-3 h-6 w-6 text-accent-copper" />
                               <span className="text-sm font-medium">Productor/Director</span>
@@ -207,7 +226,7 @@ const Register = () => {
                             </FormControl>
                             <label
                               htmlFor="model"
-                              className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-casting-50 p-4 hover:bg-casting-100 hover:border-accent-copper [&:has([data-state=checked])]:border-accent-copper [&:has([data-state=checked])]:bg-casting-100"
+                              className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-casting-50 p-4 hover:bg-casting-100 hover:border-accent-copper transition-all duration-200 [&:has([data-state=checked])]:border-accent-copper [&:has([data-state=checked])]:bg-casting-100 [&:has([data-state=checked])]:shadow-md"
                             >
                               <Camera className="mb-3 h-6 w-6 text-accent-copper" />
                               <span className="text-sm font-medium">Modelo</span>
@@ -225,7 +244,7 @@ const Register = () => {
                   className="w-full bg-accent-copper hover:bg-accent-copper/90 text-white"
                   disabled={isLoading}
                 >
-                  {isLoading ? "Cargando..." : "Crear Cuenta"}
+                  {isLoading ? "Procesando..." : "Crear Cuenta"}
                 </Button>
               </form>
             </Form>

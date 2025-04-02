@@ -93,6 +93,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signUp = async (email: string, password: string, name: string, userType: UserType) => {
     try {
+      console.log("Registrando usuario con:", { email, name, userType });
+      
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -103,6 +105,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           },
         },
       });
+
+      if (error) {
+        console.error("Error durante el registro:", error);
+      } else {
+        console.log("Usuario registrado exitosamente:", data);
+      }
 
       return { error };
     } catch (error) {

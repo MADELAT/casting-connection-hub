@@ -1,88 +1,109 @@
 
 import { Link } from "react-router-dom";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuSeparator, 
-  DropdownMenuTrigger,
-  DropdownMenuLabel
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { User, LogOut, Settings, UserCircle } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { User, LogOut, Settings, Clipboard, CameraIcon, Film } from "lucide-react";
+import { UserType } from "@/types";
 
-interface UserMenuProps {
-  linkClasses: string;
-}
-
-const UserMenu = ({ linkClasses }: UserMenuProps) => {
+const UserMenu = () => {
   const { user, userProfile, signOut } = useAuth();
   
-  if (!user) {
+  if (!user || !userProfile) {
     return (
-      <div className="flex items-center gap-4">
-        <Link to="/login" className={linkClasses}>
+      <div className="flex items-center space-x-4">
+        <Link
+          to="/login"
+          className="text-sm text-casting-600 hover:text-accent-copper transition-colors"
+        >
           Iniciar Sesión
         </Link>
-        <Link to="/register">
-          <Button className="bg-accent-copper hover:bg-accent-copper/90 text-white transition-all duration-300 hover:translate-y-[-2px] hover:shadow-lg font-sans font-normal">
-            Regístrate
-          </Button>
+        <Link
+          to="/register"
+          className="px-4 py-2 text-sm font-medium text-white bg-accent-copper rounded-md hover:bg-accent-copper/90 transition-colors"
+        >
+          Regístrate
         </Link>
       </div>
     );
   }
-  
+
+  const getDashboardLink = (userType: UserType) => {
+    switch (userType) {
+      case 'actor':
+        return '/actor/dashboard';
+      case 'producer':
+        return '/producer/dashboard';
+      case 'model':
+        return '/model/dashboard';
+      case 'admin':
+        return '/admin/dashboard';
+      default:
+        return '/';
+    }
+  };
+
+  const getNameInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map((n) => n[0])
+      .join('')
+      .toUpperCase()
+      .substring(0, 2);
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-          {userProfile?.profilePicture ? (
-            <img
-              src={userProfile.profilePicture}
-              alt="Profile"
-              className="h-10 w-10 rounded-full object-cover"
-            />
-          ) : (
-            <UserCircle className="h-6 w-6" />
-          )}
-        </Button>
+        <button className="outline-none focus:ring-2 focus:ring-accent-copper focus:ring-offset-2 rounded-full">
+          <Avatar>
+            <AvatarFallback className="bg-accent-copper text-white">
+              {getNameInitials(userProfile.name)}
+            </AvatarFallback>
+          </Avatar>
+        </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{userProfile?.name || user.email}</p>
-            <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+            <p className="text-sm font-medium leading-none">{userProfile.name}</p>
+            <p className="text-xs leading-none text-muted-foreground">
+              {userProfile.email}
+            </p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link to={
-            userProfile?.userType === 'actor' ? '/actor/dashboard' :
-            userProfile?.userType === 'producer' ? '/producer/dashboard' :
-            userProfile?.userType === 'model' ? '/model/dashboard' :
-            userProfile?.userType === 'admin' ? '/admin/dashboard' : '/'
-          } className="w-full cursor-pointer">
+        
+        <Link to={getDashboardLink(userProfile.userType)}>
+          <DropdownMenuItem className="cursor-pointer">
+            {userProfile.userType === 'actor' && <Film className="mr-2 h-4 w-4" />}
+            {userProfile.userType === 'model' && <CameraIcon className="mr-2 h-4 w-4" />}
+            {userProfile.userType === 'producer' && <Clipboard className="mr-2 h-4 w-4" />}
+            {userProfile.userType === 'admin' && <Settings className="mr-2 h-4 w-4" />}
             Mi Dashboard
+          </DropdownMenuItem>
+        </Link>
+        
+        {userProfile.userType !== 'admin' && (
+          <Link to={`/${userProfile.userType}/profile`}>
+            <DropdownMenuItem className="cursor-pointer">
+              <User className="mr-2 h-4 w-4" />
+              Mi Perfil
+            </DropdownMenuItem>
           </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link to="/castings-abiertos" className="w-full cursor-pointer">
-            Castings Abiertos
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link to="/settings" className="w-full cursor-pointer">
-            <Settings className="mr-2 h-4 w-4" />
-            <span>Configuración</span>
-          </Link>
-        </DropdownMenuItem>
+        )}
+        
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={signOut} className="cursor-pointer">
+        <DropdownMenuItem className="cursor-pointer" onClick={() => signOut()}>
           <LogOut className="mr-2 h-4 w-4" />
-          <span>Cerrar Sesión</span>
+          Cerrar Sesión
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
