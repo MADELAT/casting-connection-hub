@@ -36,6 +36,8 @@ const ProtectedRoute = ({ children, allowedUserTypes }: ProtectedRouteProps) => 
       return <Navigate to="/producer/dashboard" replace />;
     } else if (userProfile.userType === 'model') {
       return <Navigate to="/model/dashboard" replace />;
+    } else if (userProfile.userType === 'admin') {
+      return <Navigate to="/admin/dashboard" replace />;
     } else {
       return <Navigate to="/" replace />;
     }
