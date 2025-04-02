@@ -374,7 +374,7 @@ export type Database = {
           name: string
           profile_completed: boolean | null
           updated_at: string | null
-          user_type: string
+          user_type: Database["public"]["Enums"]["user_type_enum"]
         }
         Insert: {
           created_at?: string | null
@@ -384,7 +384,7 @@ export type Database = {
           name: string
           profile_completed?: boolean | null
           updated_at?: string | null
-          user_type: string
+          user_type: Database["public"]["Enums"]["user_type_enum"]
         }
         Update: {
           created_at?: string | null
@@ -394,7 +394,7 @@ export type Database = {
           name?: string
           profile_completed?: boolean | null
           updated_at?: string | null
-          user_type?: string
+          user_type?: Database["public"]["Enums"]["user_type_enum"]
         }
         Relationships: []
       }
