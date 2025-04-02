@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavbarStyles } from "./navbar/useNavbarStyles";
@@ -31,7 +32,7 @@ const NavBar = ({ userType = null, isLoggedIn = false }: NavBarProps) => {
           </div>
           
           <div className="hidden md:block">
-            <UserMenu linkClasses={linkClasses} />
+            <UserMenu />
           </div>
           
           <MobileMenu 

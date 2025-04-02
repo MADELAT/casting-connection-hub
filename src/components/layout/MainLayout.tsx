@@ -2,10 +2,11 @@
 import { ReactNode } from "react";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
+import { UserType } from "@/types";
 
 interface MainLayoutProps {
   children: ReactNode;
-  userType?: 'actor' | 'producer' | 'agent' | 'model' | 'admin' | null;
+  userType?: UserType;
   isLoggedIn?: boolean;
   hideFooter?: boolean;
 }
