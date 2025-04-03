@@ -21,7 +21,7 @@ const registerSchema = z
   .object({
     name: z.string().min(2, { message: "El nombre debe tener al menos 2 caracteres" }),
     email: z.string().email({ message: "Por favor ingresa un email válido" }),
-    userType: z.enum(["actor", "producer", "agent"], {
+    userType: z.enum(["actor", "producer", "model", "admin"], {
       required_error: "Por favor selecciona un tipo de usuario",
     }),
     password: z.string().min(6, { message: "La contraseña debe tener al menos 6 caracteres" }),
@@ -54,31 +54,37 @@ const Register = ({ onRegister }: RegisterProps) => {
   });
   
   const onSubmit = async (data: RegisterFormValues) => {
-    setIsLoading(true);
+  setIsLoading(true);
+
+  try {
+    console.log("Register attempt:", data);
     
-    try {
-      console.log("Register attempt:", data);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // In a real app, you would register the user against a backend
-      onRegister(data.userType);
-      
-      if (data.userType === 'actor') {
-        navigate('/actor/dashboard');
-      } else {
-        navigate('/producer/dashboard');
-      }
-      
-      toast.success("Registro exitoso");
-    } catch (error) {
-      console.error("Register error:", error);
-      toast.error("Ha ocurrido un error al registrarse");
-    } finally {
-      setIsLoading(false);
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // En una aplicación real, registrarías al usuario contra un backend
+    onRegister(data.userType);
+    
+    // Redirigir según el tipo de usuario
+    if (data.userType === 'actor') {
+      navigate('/actor/dashboard');
+    } else if (data.userType === 'producer') {
+      navigate('/producer/dashboard');
+    } else if (data.userType === 'model') {
+      navigate('/model/dashboard');
+    } else if (data.userType === 'admin') {
+      navigate('/admin/dashboard');
     }
-  };
+    
+    toast.success("Registro exitoso");
+  } catch (error) {
+    console.error("Register error:", error);
+    toast.error("Ha ocurrido un error al registrarse");
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   return (
     <div className="max-w-md w-full mx-auto p-6 bg-white rounded-xl shadow-sm border border-casting-100">
@@ -137,7 +143,8 @@ const Register = ({ onRegister }: RegisterProps) => {
                     <SelectContent>
                       <SelectItem value="actor">Actor / Actriz</SelectItem>
                       <SelectItem value="producer">Productor / Director</SelectItem>
-                      <SelectItem value="agent">Representante</SelectItem>
+                      <SelectItem value="model">Modelo</SelectItem>
+                      <SelectItem value="admin">Administrador</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
